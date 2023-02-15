@@ -1,5 +1,8 @@
 package iconv
 
+// #cgo darwin LDFLAGS: -liconv
+// #cgo freebsd LDFLAGS: -liconv
+// #cgo windows LDFLAGS: -liconv
 // #include <stdlib.h>
 // char *do_iconv(char *to, char *from, char *text);
 import "C"
