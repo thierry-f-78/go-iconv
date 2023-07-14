@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *do_iconv(char *to, char *from, char *text)
+char *do_iconv(char *to, char *from, char *text, int transliterate)
 {
 	iconv_t desc;
 	char *inbuf;
@@ -21,6 +21,9 @@ char *do_iconv(char *to, char *from, char *text)
 	if ((long)desc == -1) {
 		return NULL; /* conversion not supported */
 	}
+
+	/* Set option */
+	iconvctl(desc, ICONV_SET_TRANSLITERATE, &transliterate);
 
 	/* Try conversion we reach succes of definitive error */
 	loop = 1;
