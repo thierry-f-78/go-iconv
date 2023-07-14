@@ -33,6 +33,7 @@ char *do_iconv(char *to, char *from, char *text)
 		free(outbuf_start);
 		outbuf_start = malloc(loop * insize);
 		if (outbuf_start == NULL) {
+			iconv_close(desc);
 			return NULL; /* out of memory error */
 		}
 		
@@ -48,6 +49,7 @@ char *do_iconv(char *to, char *from, char *text)
 				continue;
 
 			/* unrecoverable error */
+			iconv_close(desc);
 			free(outbuf_start);
 			return NULL;
 		}
