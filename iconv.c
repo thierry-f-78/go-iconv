@@ -15,6 +15,15 @@ char *do_iconv(char *to, char *from, char *text, int transliterate)
 	int loop;
 	size_t res;
 	char *outbuf_start;
+	char to_with_transliteration[128];
+
+#ifndef __APPLE__
+	if (transliterate) {
+		snprintf(to_with_transliteration, 127, "%s//TRANSLIT", to);
+		to_with_transliteration[127] = 0;
+		to = to_with_transliteration;
+	}
+#endif
 
 	/* Open conversioon descriptor */
 	desc = iconv_open(to, from);
@@ -22,8 +31,10 @@ char *do_iconv(char *to, char *from, char *text, int transliterate)
 		return NULL; /* conversion not supported */
 	}
 
+#ifdef __APPLE__
 	/* Set option */
 	iconvctl(desc, ICONV_SET_TRANSLITERATE, &transliterate);
+#endif
 
 	/* Try conversion we reach succes of definitive error */
 	loop = 1;
